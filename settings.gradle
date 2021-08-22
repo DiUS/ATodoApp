@@ -15,4 +15,9 @@
  */
 
 rootProject.name = "StateCodelab"
-include ':finished', ':start'
+include ':start'
+setBinding(new Binding([gradle: this]))
+evaluate(new File(
+        settingsDir.parentFile,
+        'atodoapp_flutter/.android/include_flutter.groovy'
+))

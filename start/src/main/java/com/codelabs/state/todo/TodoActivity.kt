@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import com.codelabs.state.ui.StateCodelabTheme
+import io.flutter.embedding.android.FlutterActivity
 
 class TodoActivity : AppCompatActivity() {
 
@@ -35,19 +36,24 @@ class TodoActivity : AppCompatActivity() {
         setContent {
             StateCodelabTheme {
                 Surface {
-                    TodoActivityScreen(todoViewModel)
+                    TodoActivityScreen(todoViewModel, onClick = {
+                        startActivity(
+                            FlutterActivity.createDefaultIntent(this)
+                        )
+                    })
                 }
             }
         }
     }
+
 }
 
 @Composable
-private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
+private fun TodoActivityScreen(todoViewModel: TodoViewModel, onClick: () -> Unit) {
     val items: List<TodoItem> by todoViewModel.todoItems.observeAsState(listOf())
     TodoScreen(
         items = items,
-        onAddItem = { todoViewModel.addItem(it) },
+        onAddItem = { onClick() },
         onRemoveItem = { todoViewModel.removeItem(it) }
     )
 }
